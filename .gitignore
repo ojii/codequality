@@ -1,3 +1,4 @@
 build/
 codequality.egg-info/
 dist/
+codequality/__pycache__/

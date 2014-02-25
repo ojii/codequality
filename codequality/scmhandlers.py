@@ -1,7 +1,7 @@
 import atexit
-import commands
 import os
 import re
+import subprocess
 import tempfile
 
 
@@ -201,7 +201,7 @@ class GitHandler(SCMHandler):
 
         Raises: GitError on any error output.
         """
-        status, output = commands.getstatusoutput('git %s' % cmd)
+        status, output = subprocess.getstatusoutput('git %s' % cmd)
         if status:
             raise GitError('"%s" failed:\n%s' % (cmd, output))
         return output

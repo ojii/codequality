@@ -42,14 +42,15 @@ All scm handlers can take a --rev flag. In the case of git, the above
 will check all relevant files created or modified (not deleted) in the
 last-committed patch. This works well as a post-commit hook.
 """
-import commands
+from __future__ import print_function
 import fnmatch
 import optparse
 import os
+import subprocess
 import sys
 
-import checkers
-import scmhandlers
+from codequality import checkers
+from codequality import scmhandlers
 
 
 class CommandError(Exception):
@@ -107,11 +108,11 @@ class CodeQuality(object):
             # on the path and being used.
             if self.options.verbose:
                 for location, filename in loc_to_filename.iteritems():
-                    print '[%s] "%s"%s' % (
+                    print('[%s] "%s"%s' % (
                         checker_class.__name__,
                         filename,
                         '' if location == filename
-                        else (' using "%s"' % location))
+                        else (' using "%s"' % location)))
 
             # We allow missing checkers by design. Users can use
             # `--list-checkers` to verify that all desired checkers are
@@ -129,7 +130,7 @@ class CodeQuality(object):
             for err in errs:
                 errors_exist = True
                 err['filename'] = loc_to_filename[err['filename']]
-                print self.out_fmt % err
+                print(self.out_fmt % err)
         return errors_exist
 
     # End public API
@@ -190,15 +191,15 @@ class CodeQuality(object):
             max_width = max(max_width, len(clazz.tool), len(clazz.__name__))
 
         for clazz in sorted(classes):
-            status, _ = commands.getstatusoutput('which %s' % clazz.tool)
+            status, _ = subprocess.getstatusoutput('which %s' % clazz.tool)
             result = 'missing' if status else 'installed'
             version = '' if status else clazz.get_version()
-            print '%s%s%s%s' % (
+            print('%s%s%s%s' % (
                 clazz.__name__.ljust(max_width + 1),
                 clazz.tool.ljust(max_width + 1),
                 result.ljust(max_width + 1),
                 version,
-            )
+            ))
 
     def _should_ignore(self, path):
         """
@@ -253,8 +254,9 @@ def main():
         errs = CodeQuality(options).codequality(paths)
         if errs:
             return 1
-    except CommandError, e:
-        print >> sys.stderr, 'Error: %s' % e
+    except CommandError:
+        e = sys.exc_info()[1]
+        print('Error: %s' % e, file=sys.stderr)
         return 1
     return 0
 
