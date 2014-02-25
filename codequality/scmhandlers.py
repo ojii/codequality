@@ -19,7 +19,7 @@ def register(name):
 
 
 class SCMHandler(object):
-    def srcs_to_check(self, paths, rev=None):
+    def srcs_to_check(self, paths, rev=None, ignore_untracked=False):
         """ Yields (filename, src path to check) for relevant paths at rev.
 
         What is "relevant" and how to interpret "rev" are determined by
@@ -43,7 +43,7 @@ class NoSCMHandler(SCMHandler):
     """
     Simple no-scm handler. Checks all paths provided.
     """
-    def srcs_to_check(self, paths, rev=None):
+    def srcs_to_check(self, paths, rev=None, ignore_untracked=False):
         for path in sorted(paths):
             yield (path, path)
 

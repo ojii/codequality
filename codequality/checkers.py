@@ -2,7 +2,10 @@ from subprocess import PIPE
 from subprocess import Popen
 import csv
 import re
-import StringIO
+try:
+    import StringIO
+except ImportError:
+    from io import StringIO 
 
 
 checkers = {}
@@ -81,7 +84,7 @@ class Checker(object):
         lines = out.strip().splitlines() + err.strip().splitlines()
         result = []
         for line in lines:
-            match = self.tool_err_re.match(line)
+            match = self.tool_err_re.match(line.decode('utf8'))
             if not match:
                 if self.break_on_tool_re_mismatch:
                     raise ValueError(

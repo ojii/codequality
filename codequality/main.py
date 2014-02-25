@@ -101,7 +101,7 @@ class CodeQuality(object):
                 loc_to_filename[location] = filename
 
         for checker_class, loc_to_filename \
-                in checker_to_loc_to_filename.iteritems():
+                in checker_to_loc_to_filename.items():
             locations = loc_to_filename.keys()
 
             # TODO: this should only be printed if the checker is actually
