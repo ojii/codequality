@@ -190,7 +190,7 @@ class CodeQuality(object):
         for clazz in classes:
             max_width = max(max_width, len(clazz.tool), len(clazz.__name__))
 
-        for clazz in sorted(classes):
+        for clazz in sorted(classes, key=lambda cls: cls.__name__):
             status, _ = subprocess.getstatusoutput('which %s' % clazz.tool)
             result = 'missing' if status else 'installed'
             version = '' if status else clazz.get_version()
