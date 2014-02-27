@@ -107,7 +107,7 @@ class CodeQuality(object):
             # TODO: this should only be printed if the checker is actually
             # on the path and being used.
             if self.options.verbose:
-                for location, filename in loc_to_filename.iteritems():
+                for location, filename in loc_to_filename.items():
                     print('[%s] "%s"%s' % (
                         checker_class.__name__,
                         filename,
@@ -182,7 +182,7 @@ class CodeQuality(object):
         available.
         """
         classes = set()
-        for checker_group in checkers.checkers.itervalues():
+        for checker_group in checkers.checkers.values():
             for checker in checker_group:
                 classes.add(checker)
 
